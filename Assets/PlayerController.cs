@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,12 +18,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float minSpeed = 1.0f;
 
     private Vector3 lastTrailUpdate;
-    private float trailUpdateThreshold = 0.2f;
+    private float trailUpdateThreshold = 0.4f;
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
-    [SerializeField] private String sceneExit;
-
-    [SerializeField] private float fuel = 20.0f;
 
     void Start()
     {
@@ -44,16 +40,10 @@ public class PlayerController : MonoBehaviour
         
         transform.Rotate(axis * speedRotate * Time.deltaTime * Vector3.forward);
         time += Time.deltaTime;
-        fuel -= Time.deltaTime;
         
         if (Vector3.Distance(transform.position, lastTrailUpdate) >= trailUpdateThreshold)
         {
             CreateTrail();
-        }
-
-        if (fuel <= 0.0f)
-        {
-            Destroy(this);
         }
     }
 
@@ -70,21 +60,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             Destroy(this);
-        }
-
-        if (collision.gameObject.CompareTag("Fuel"))
-        {
-            fuel += 5.0f;
-        }
-
-        if (collision.gameObject.CompareTag("Exit"))
-        {
-            SceneManager.LoadScene(sceneExit);
-        }
-
-        if (collision.gameObject.CompareTag("Kill"))
-        {
-            Destroy(collision.gameObject);
         }
     }
 
