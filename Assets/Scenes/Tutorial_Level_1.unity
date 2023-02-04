@@ -2921,7 +2921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3587441697834449788, guid: 5bce91f6e950c044ab2862bc734aefbe, type: 3}
       propertyPath: fuel
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3587441697834449788, guid: 5bce91f6e950c044ab2862bc734aefbe, type: 3}
       propertyPath: maxSpeed
