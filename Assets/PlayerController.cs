@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
 
+    [SerializeField] private float fuel = 5.0f;
+
     void Start()
     {
         transform.position = new Vector3(0, 0);
@@ -40,10 +42,16 @@ public class PlayerController : MonoBehaviour
         
         transform.Rotate(axis * speedRotate * Time.deltaTime * Vector3.forward);
         time += Time.deltaTime;
+        fuel -= Time.deltaTime;
         
         if (Vector3.Distance(transform.position, lastTrailUpdate) >= trailUpdateThreshold)
         {
             CreateTrail();
+        }
+
+        if (fuel <= 0.0f)
+        {
+            Destroy(this);
         }
     }
 
@@ -60,6 +68,11 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle"))
         {
             Destroy(this);
+        }
+
+        if (collision.gameObject.CompareTag("Fuel"))
+        {
+            fuel += 5.0f;
         }
     }
 
