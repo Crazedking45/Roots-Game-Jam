@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private float trailUpdateThreshold = 0.4f;
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
+
+    [SerializeField] private float fuel = 20.0f;
 
     void Start()
     {
@@ -40,10 +43,16 @@ public class PlayerController : MonoBehaviour
         
         transform.Rotate(axis * speedRotate * Time.deltaTime * Vector3.forward);
         time += Time.deltaTime;
+        fuel -= Time.deltaTime;
         
         if (Vector3.Distance(transform.position, lastTrailUpdate) >= trailUpdateThreshold)
         {
             CreateTrail();
+        }
+
+        if (fuel <= 0.0f)
+        {
+            Destroy(this);
         }
     }
 
@@ -61,6 +70,13 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(this);
         }
+
+        if (collision.gameObject.CompareTag("Fuel"))
+        {
+            fuel += 5.0f;
+            Destroy(collision.gameObject);
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
