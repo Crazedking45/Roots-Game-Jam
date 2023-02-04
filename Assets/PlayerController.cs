@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
 
-    [SerializeField] private float fuel = 5.0f;
+    [SerializeField] private float fuel = 20.0f;
 
     void Start()
     {
