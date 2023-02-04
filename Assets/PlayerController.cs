@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private float trailUpdateThreshold = 0.2f;
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
+    [SerializeField] private String sceneExit;
 
     [SerializeField] private float fuel = 20.0f;
 
@@ -73,6 +75,11 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Fuel"))
         {
             fuel += 5.0f;
+        }
+
+        if (collision.gameObject.CompareTag("Exit"))
+        {
+            SceneManager.LoadScene(sceneExit);
         }
     }
 
