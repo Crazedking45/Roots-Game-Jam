@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3587441697834449787}
   - component: {fileID: 3587441697834449786}
-  - component: {fileID: 3587441697834449785}
+  - component: {fileID: -2152285145309441440}
   - component: {fileID: 3587441697834449788}
   m_Layer: 0
   m_Name: PlayerPrefab
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &3587441697834449785
+--- !u!61 &-2152285145309441440
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedRotate: 120
   accelerationTime: 60
-  maxSpeed: 10
+  maxSpeed: 5
   minSpeed: 1.5
-  trailObject: {fileID: 0}
+  trailPrefab: {fileID: 3587441697834449735, guid: d2ff70671d9154342b5aebf40479f617, type: 3}
+  trailFolder: {fileID: 0}

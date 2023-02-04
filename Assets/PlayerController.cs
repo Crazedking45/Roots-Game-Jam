@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
@@ -18,7 +19,8 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 lastTrailUpdate;
     private float trailUpdateThreshold = 0.2f;
-    [SerializeField] private GameObject trailObject;
+    [SerializeField] private GameObject trailPrefab;
+    [SerializeField] private Transform trailFolder;
 
     void Start()
     {
@@ -47,7 +49,25 @@ public class PlayerController : MonoBehaviour
 
     void CreateTrail()
     {
-        Instantiate(trailObject, transform.position, transform.rotation);
+        var trail = Instantiate(trailPrefab, transform.position, transform.rotation);
+        trail.transform.parent = trailFolder;
+        trail.tag = "NewTrail";
         lastTrailUpdate = transform.position;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Destroy(this);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("NewTrail"))
+        {
+            collision.gameObject.tag = "Obstacle";
+        }
     }
 }
