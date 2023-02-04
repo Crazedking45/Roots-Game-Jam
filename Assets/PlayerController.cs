@@ -81,6 +81,11 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene(sceneExit);
         }
+
+        if (collision.gameObject.CompareTag("Kill"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
