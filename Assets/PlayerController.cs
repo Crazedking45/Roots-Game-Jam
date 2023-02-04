@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Fuel"))
         {
             fuel += 5.0f;
-            Destroy(collision.gameObject);
         }
 
         if (collision.gameObject.CompareTag("Exit"))
