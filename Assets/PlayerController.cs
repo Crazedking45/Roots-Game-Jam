@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private float speed;
     private float time;
 
+
     [SerializeField] private float speedRotate = 50.0f;
 
     // acceleration variable
