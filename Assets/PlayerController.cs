@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 
 public class PlayerController : MonoBehaviour
@@ -24,17 +27,42 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject trailPrefab;
     [SerializeField] private Transform trailFolder;
 
-    [SerializeField] private float fuel = 20.0f;
+    [SerializeField] private float maxFuel = 20.0f;
+    private float fuel;
+    [SerializeField] private string sceneName;
+
+    private bool hasStarted = false;
+    private bool dead = false;
+
+    [SerializeField] private TMP_Text uiText;
+    [SerializeField] private Slider slider;
 
     void Start()
     {
-        transform.position = new Vector3(0, 0);
         lastTrailUpdate = transform.position;
+        fuel = maxFuel;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!hasStarted)
+        {
+            if (Input.anyKey)
+            {
+                uiText.text = "";
+                hasStarted = true;
+            }
+            return;
+        }
+
+        if (dead) {
+            if (Input.anyKey)
+            {
+                SceneManager.LoadScene(sceneName);
+            }
+            return;
+        }
         // acceleration
         speed = Mathf.SmoothStep(minSpeed, maxSpeed, time / accelerationTime);
 
@@ -45,6 +73,7 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(axis * speedRotate * Time.deltaTime * Vector3.forward);
         time += Time.deltaTime;
         fuel -= Time.deltaTime;
+        slider.value = fuel / maxFuel;
         
         if (Vector3.Distance(transform.position, lastTrailUpdate) >= trailUpdateThreshold)
         {
@@ -53,11 +82,11 @@ public class PlayerController : MonoBehaviour
 
         if (fuel <= 0.0f)
         {
-            Destroy(this);
+            Die();
         }
     }
 
-    void CreateTrail()
+    private void CreateTrail()
     {
         var trail = Instantiate(trailPrefab, transform.position, transform.rotation);
         trail.transform.parent = trailFolder;
@@ -69,13 +98,12 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            Destroy(this);
+            Die();
         }
 
         if (collision.gameObject.CompareTag("Fuel"))
         {
             fuel += 5.0f;
-            Destroy(collision.gameObject);
         }
 
     }
@@ -86,5 +114,15 @@ public class PlayerController : MonoBehaviour
         {
             collision.gameObject.tag = "Obstacle";
         }
+        if (collision.gameObject.CompareTag("Bounds"))
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        dead = true;
+        uiText.text = "Press any key to restart...";
     }
 }
